@@ -5,6 +5,9 @@ node ('ubuntu') {
         // This stage clones the source code from your Git repository
         checkout scm  // This checks out the source code as per Jenkins SCM configuration
     }
+    stage('SAST'){
+        build 'SCA_SAST_SNYK'
+    }
 
     stage('Build-and-Tag') {
         // This builds the Docker image from your Dockerfile
@@ -17,6 +20,8 @@ node ('ubuntu') {
             app.push("new")  // Pushes the image with the tag "new"
         }
     }
+   
+        
 
     stage('Pull-image-server') {
         // This stage pulls down the Docker Compose stack and restarts it with the new image
