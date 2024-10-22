@@ -28,5 +28,8 @@ node ('ubuntu') {
         sh "docker-compose down"  // Shuts down the existing containers
         sh "docker-compose up -d"  // Brings up the containers in detached mode
     }
+    stage('DAST'){
+        build 'SECURITY-DAST-OWASP_ZAP'
+    }
 }
 
