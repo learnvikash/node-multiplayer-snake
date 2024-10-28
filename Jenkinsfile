@@ -12,6 +12,10 @@ node ('ubuntu') {
         app = docker.build("learnvikash/snake")  // Builds the image with the tag "learnvikash/snake"
     }
 
+    stage('SAST'){
+        build 'SCA_SAST_SNYK'
+    }
+
     stage('Post-to-dockerhub') {
         // This stage logs in to Docker Hub and pushes the image to the Docker registry
         docker.withRegistry('https://registry.hub.docker.com', 'learnvikash2') {
@@ -19,13 +23,16 @@ node ('ubuntu') {
         }
     }
    
-        
+    stage('DAST'){
+        build 'SECURITY-DAST-OWASP_ZAP'
+    }    
 
     stage('Pull-image-server') {
         // This stage pulls down the Docker Compose stack and restarts it with the new image
         sh "docker-compose down"  // Shuts down the existing containers
         sh "docker-compose up -d"  // Brings up the containers in detached mode
     }
+    
     
 }
 
